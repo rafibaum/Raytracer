@@ -1,4 +1,7 @@
 use crate::vec::Vec3;
+use std::path::Path;
+use std::fs::File;
+use std::io::{BufWriter, Write};
 
 mod vec;
 
@@ -6,7 +9,14 @@ const IMAGE_WIDTH: u32 = 256;
 const IMAGE_HEIGHT: u32 = 256;
 
 fn main() {
-    let mut buf = image::ImageBuffer::new(IMAGE_WIDTH, IMAGE_HEIGHT);
+    let path = Path::new(r"image.png");
+    let file = File::create(path).unwrap();
+    let file_writer = BufWriter::new(file);
+
+    let mut encoder = png::Encoder::new(file_writer, IMAGE_WIDTH, IMAGE_HEIGHT);
+    encoder.set_color(png::ColorType::RGB);
+    encoder.set_depth(png::BitDepth::Eight);
+    let mut writer = encoder.write_header().unwrap().into_stream_writer();
 
     for j in 0..IMAGE_HEIGHT {
         println!("Scanlines remaining: {}", IMAGE_HEIGHT - j);
@@ -19,13 +29,10 @@ fn main() {
             let ig = (255.999 * g) as u8;
             let ib = (255.999 * b) as u8;
 
-            buf.put_pixel(i, j, image::Rgb([ir, ig, ib]));
+            writer.write_all(&[ir, ig, ib]).unwrap();
         }
     }
 
-    buf.save("image.png").unwrap();
+    writer.finish().unwrap();
     println!("Done!");
-
-    let test = -Vec3::new(5.0, 5.0, 5.0);
-    println!("{}", test);
 }
