@@ -1,3 +1,7 @@
+use crate::vec::Vec3;
+
+mod vec;
+
 const IMAGE_WIDTH: u32 = 256;
 const IMAGE_HEIGHT: u32 = 256;
 
@@ -21,4 +25,7 @@ fn main() {
 
     buf.save("image.png").unwrap();
     println!("Done!");
+
+    let test = -Vec3::new(5.0, 5.0, 5.0);
+    println!("{}", test);
 }
