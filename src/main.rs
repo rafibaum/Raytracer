@@ -3,6 +3,7 @@ use std::fs::File;
 use std::io::{BufWriter, Write};
 use std::path::Path;
 
+mod ray;
 mod vec;
 
 const IMAGE_WIDTH: u32 = 256;
