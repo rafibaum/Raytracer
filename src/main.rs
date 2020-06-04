@@ -1,7 +1,7 @@
 use crate::vec::Vec3;
-use std::path::Path;
 use std::fs::File;
 use std::io::{BufWriter, Write};
+use std::path::Path;
 
 mod vec;
 
